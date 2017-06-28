@@ -28,8 +28,8 @@ sharkRouter.put('/api/sharks/:id', jsonParser, (req, res, next) => {
     runValidaters: true,
     new: true,
   };
-  Shark.findByIdAndUpdate(req.params.id, req.body, options)
-  .then(note => res.json(note))
+  Shark.findByIdAndUpdate(req.params.id, req.body, {new:true})
+  .then(shark => res.json(shark))
   .catch(next);
 });
 

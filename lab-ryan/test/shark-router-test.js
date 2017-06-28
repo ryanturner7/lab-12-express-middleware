@@ -43,5 +43,50 @@ describe('Testing shark router.', () => {
         expect(res.status).toEqual(400);
       });
     });
+    it('Should respond with a 400 status.', () => {
+      return superagent.post(`${API_URL}/api/sharks`)
+      .send({type: 'Porbeagle', length: '12', weight: '298'})
+      .catch(res => {
+        expect(res.status).toEqual(400);
+      });
+    });
+    it('Should respond with a 400 status.', () => {
+      return superagent.post(`${API_URL}/api/sharks`)
+      .send({length: '12', weight: '298', toothCount: '50'})
+      .catch(res => {
+        expect(res.status).toEqual(400);
+
+      });
+    });
+    it('Should respond with a 400 status.', () => {
+      return superagent.post(`${API_URL}/api/sharks`)
+      .send({type: 'Porbeagle '})
+      .catch(res => {
+        expect(res.status).toEqual(400);
+      });
+    });
+    it('should respond with a 409', () => {
+      return superagent.post(`${API_URL}/api/sharks`)
+      .send(data)
+      .catch(res => {
+        expect(res.status).toEqual(409);
+      });
+    });
+  });
+  describe('Testing GET /api/sharks/:id', () => {
+    var tempShark;
+    afterEach(() => Shark.remove({}));
+    beforeEach(() => {
+      return new Shark({
+        type: 'Porbeagle',
+        length: '12',
+        weight: '298',
+        toothCount: '50',
+      })
+      .save()
+      .then(shark => {
+        tempShark = shark;
+      });
+    });
   });
 });
