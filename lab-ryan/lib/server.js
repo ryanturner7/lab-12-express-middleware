@@ -14,7 +14,7 @@ let server;
 app.use(cors());
 app.use(morgan('dev'));
 
-app.use(require('../route/note-router.js'));
+app.use(require('../route/shark-router.js'));
 
 app.use(require('./error-middleware.js'));
 
