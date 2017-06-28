@@ -88,5 +88,58 @@ describe('Testing shark router.', () => {
         tempShark = shark;
       });
     });
+    it('Should respond with an updated shark and a 200 status.', () => {
+      return superagent.put(`${API_URL}/api/sharks/${tempShark._id}`)
+      .send({type: 'Great White'})
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body._id).toEqual(tempShark._id);
+        expect(res.body.type).toEqual('Great White');
+        expect(res.body.length).toEqual(12);
+        expect(res.body.weight).toEqual(298);
+        expect(res.body.toothCount).toEqual(50);
+      });
+    });
+    it('Should respond with a 400 status with an invalid body.', () => {
+      return superagent.put(`${API_URL}/api/sharks/${tempShark._id}`)
+      .send({toothCount: '60'})
+      .catch(res => {
+        expect(res.status).toEqual(400);
+      });
+    });
+    it('Should respond with a 404 status with an invalid ID.', () => {
+      superagent.get(`${API_URL}/api/sharks/4962e0da888be66a146b69d6`)
+      .send({toothCount: 100})
+      .catch(res => {
+        expect(res.status).toEqual(404);
+      });
+    });
+    describe('testing DELETE /api/sharks/:id', () => {
+      afterEach(() => Shark.remove({}));
+      beforeEach(() => {
+        return new Shark({
+          type: 'Wobbegong',
+          length: 4,
+          weight: 10,
+          toothCount: 30,
+        })
+       .save()
+       .then(shark => {
+         tempShark = shark;
+       });
+      });
+      it('Should delete a shark and return a 204 status with a valid ID.', () => {
+        return superagent.delete(`${API_URL}/api/sharks/${tempShark._id}`)
+        .then(res => {
+          expect(res.status).toEqual(204);
+        });
+      });
+      it('Should return a 404 status with an invalid ID', () => {
+        return superagent.delete(`${API_URL}/api/sharks/4962e0da888be66a146b69d6`)
+        .catch(res => {
+          expect(res.status).toEqual(404);
+        });
+      });
+    });
   });
 });

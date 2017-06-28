@@ -23,7 +23,6 @@ serverControl.start = () => {
   return new Promise((resolve, reject) => {
     if(!server || !server.isOn){
       server = app.listen(process.env.PORT, () => {
-        console.log('server up', process.env.PORT);
         server.isOn = true;
         resolve();
       });
@@ -37,7 +36,6 @@ serverControl.stop = () => {
   return new Promise((resolve, reject) => {
     if(server && server.isOn) {
       server.close(() => {
-        console.log('server is down');
         server.isOn = false;
         resolve();
       });
